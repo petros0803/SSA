@@ -1,0 +1,74 @@
+{
+  "students": [
+    {
+      "id": 0,
+      "firstName": "Bogdan Ciprian",
+      "lastName": "Petrosceac",
+      "year": 4,
+      "code": "XT 738727",
+      "specialization": "Calculatoare",
+      "class": "3143A",
+      "email": "first.last@student.usv.ro"
+    },
+    {
+      "id": 1,
+      "firstName": "Andrei",
+      "lastName": "Hincu",
+      "year": 4,
+      "code": "XT 738727",
+      "specialization": "Calculatoare",
+      "class": "3143A",
+      "email": "first.last@student.usv.ro"
+    },
+    {
+      "id": 2,
+      "firstName": "Wilfried Nikolas",
+      "lastName": "Derscanu",
+      "year": 4,
+      "code": "XT 738727",
+      "specialization": "Calculatoare",
+      "class": "3143A",
+      "email": "first.last@student.usv.ro"
+    },
+    {
+      "id": 3,
+      "firstName": "Andrei",
+      "lastName": "Cojocaru",
+      "year": 4,
+      "code": "XT 738727",
+      "specialization": "Calculatoare",
+      "class": "3143A",
+      "email": "first.last@student.usv.ro"
+    },
+    {
+      "id": 4,
+      "firstName": "Serban Mihai",
+      "lastName": "Caliniuc",
+      "year": 4,
+      "code": "XT 738727",
+      "specialization": "Calculatoare",
+      "class": "3143A",
+      "email": "first.last@student.usv.ro"
+    },
+    {
+      "id": 5,
+      "firstName": "Razvan Sebastian",
+      "lastName": "Ailenei",
+      "year": 4,
+      "code": "XT 738727",
+      "specialization": "Calculatoare",
+      "class": "3141A",
+      "email": "first.last@student.usv.ro"
+    },
+    {
+      "id": 6,
+      "firstName": "Alex",
+      "lastName": "Cosovanu",
+      "year": 4,
+      "code": "XT 738727",
+      "specialization": "Managementul energiei",
+      "class": "3144B",
+      "email": "first.last@student.usv.ro"
+    }
+  ]
+}
