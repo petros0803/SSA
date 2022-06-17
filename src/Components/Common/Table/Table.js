@@ -7,13 +7,19 @@ import EYE from "../../../Assets/Icons/eye.png";
 import EDIT from "../../../Assets/Icons/edit.png";
 import DELETE from "../../../Assets/Icons/x-octagon.png";
 
-const Table = ({ colData, data, setModalState, openModal, setItemToEdit }) => {
+const Table = ({
+  colData,
+  data,
+  setModalState,
+  openModal,
+  setItemToEdit,
+  specializations,
+}) => {
   const handleModalStateChange = (state, id) => {
     setModalState(state);
     setItemToEdit(id);
     openModal(true);
   };
-
   return (
     <StyledTable>
       <table>
@@ -29,7 +35,15 @@ const Table = ({ colData, data, setModalState, openModal, setItemToEdit }) => {
           {data.map((value, key) => (
             <tr key={key}>
               {colData.map((col, index) => (
-                <td key={index}>{value[col]}</td>
+                <td key={index}>
+                  {col !== "specialization"
+                    ? value[col]
+                    : specializations.map(
+                        (specialization) =>
+                          specialization.id === value[col] &&
+                          specialization.abbreviation
+                      )}
+                </td>
               ))}
               <td>
                 <img

@@ -2,9 +2,6 @@ import styled from "styled-components";
 import Colors from "../../../Constants/colors";
 
 export default styled.div`
-  width: 90%;
-  margin: 0 auto;
-
   table {
     width: 100%;
     border-collapse: separate;
@@ -16,7 +13,7 @@ export default styled.div`
 
     tr {
       font-size: 16px;
-      height: 35px;
+      height: 25px;
     }
 
     thead tr:first-child td {

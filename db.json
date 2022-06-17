@@ -1,14 +1,14 @@
 {
   "students": [
     {
-      "id": 0,
       "firstName": "Bogdan Ciprian",
       "lastName": "Petrosceac",
-      "year": 4,
-      "code": "XT 738727",
-      "specialization": "Calculatoare",
+      "year": 3,
+      "specialization": 1,
       "class": "3143A",
-      "email": "first.last@student.usv.ro"
+      "email": "first.last@student.usv.ro",
+      "code": "XT 738727",
+      "id": 0
     },
     {
       "id": 1,
@@ -16,19 +16,19 @@
       "lastName": "Hincu",
       "year": 4,
       "code": "XT 738727",
-      "specialization": "Calculatoare",
+      "specialization": 0,
       "class": "3143A",
       "email": "first.last@student.usv.ro"
     },
     {
-      "id": 2,
       "firstName": "Wilfried Nikolas",
       "lastName": "Derscanu",
       "year": 4,
-      "code": "XT 738727",
-      "specialization": "Calculatoare",
+      "specialization": 0,
       "class": "3143A",
-      "email": "first.last@student.usv.ro"
+      "email": "first.last@student.usv.ro",
+      "code": "XT 738727",
+      "id": 2
     },
     {
       "id": 3,
@@ -36,7 +36,7 @@
       "lastName": "Cojocaru",
       "year": 4,
       "code": "XT 738727",
-      "specialization": "Calculatoare",
+      "specialization": 0,
       "class": "3143A",
       "email": "first.last@student.usv.ro"
     },
@@ -44,9 +44,9 @@
       "id": 4,
       "firstName": "Serban Mihai",
       "lastName": "Caliniuc",
-      "year": 4,
+      "year": 2,
       "code": "XT 738727",
-      "specialization": "Calculatoare",
+      "specialization": 0,
       "class": "3143A",
       "email": "first.last@student.usv.ro"
     },
@@ -56,19 +56,105 @@
       "lastName": "Ailenei",
       "year": 4,
       "code": "XT 738727",
-      "specialization": "Calculatoare",
+      "specialization": 0,
       "class": "3141A",
       "email": "first.last@student.usv.ro"
     },
     {
-      "id": 6,
-      "firstName": "Alex",
+      "firstName": "Alexandru",
       "lastName": "Cosovanu",
       "year": 4,
-      "code": "XT 738727",
-      "specialization": "Managementul energiei",
+      "specialization": 2,
       "class": "3144B",
-      "email": "first.last@student.usv.ro"
+      "email": "first.last@student.usv.ro",
+      "code": "XT 738727",
+      "id": 6
+    },
+    {
+      "firstName": "AAA AAA",
+      "lastName": "AAA",
+      "year": 1,
+      "specialization": 0,
+      "class": "3143A",
+      "email": "b.petrosceac@gmail.com",
+      "code": "XT 738727",
+      "id": 8
+    },
+    {
+      "firstName": "BBB",
+      "lastName": "BBB",
+      "year": 3,
+      "specialization": 0,
+      "class": "3143A",
+      "email": "b.petrosceac@gmail.com",
+      "code": "XT 738727",
+      "id": 9
+    },
+    {
+      "firstName": "CCC",
+      "lastName": "CCC",
+      "year": 2,
+      "specialization": 0,
+      "class": "3143A",
+      "email": "b.petrosceac@gmail.com",
+      "code": "XT 738727",
+      "id": 10
+    }
+  ],
+  "specializations": [
+    {
+      "id": 0,
+      "name": "Calculatoare",
+      "abbreviation": "C"
+    },
+    {
+      "id": 1,
+      "name": "Automatica si Calculatoare",
+      "abbreviation": "AIA"
+    },
+    {
+      "id": 2,
+      "name": "Managementul energiei",
+      "abbreviation": "ME"
+    }
+  ],
+  "secretaries": [
+    {
+      "id": 0,
+      "firstName": "Bogdan Ciprian",
+      "lastName": "Petrosceac",
+      "address": "A.S. Puskin 96"
+    },
+    {
+      "id": 1,
+      "firstName": "Andrei",
+      "lastName": "Hincu",
+      "address": "A.S. Puskin 96"
+    },
+    {
+      "firstName": "Andrei",
+      "lastName": "Cojocaru",
+      "address": "A.S. Puskin 961",
+      "id": 2
+    },
+    {
+      "id": 3,
+      "firstName": "Wilfried Nikolas",
+      "lastName": "Derscanu",
+      "address": "A.S. Puskin 96"
+    },
+    {
+      "firstName": "Razvan Sebastian",
+      "lastName": "Ailenei",
+      "address": "Aleea Ion Gramada nr 555",
+      "id": 4
+    }
+  ],
+  "certificates": [
+    {
+      "id": 0,
+      "title": "Student Certificate",
+      "url": "/student-certificate"
     }
   ]
 }
