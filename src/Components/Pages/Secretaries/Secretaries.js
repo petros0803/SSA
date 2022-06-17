@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from "react";
-import StyledStudents from "./StyledStudents";
+import StyledSecretaries from "./StyledSecretaries";
 import axios from "axios";
 import { APIVariables } from "../../../Shared/api";
 import Table from "../../Common/Table/Table";
-import StudentModal from "./Modals/StudentModal";
 import { Pagination, Skeleton, TextField } from "@mui/material";
+import SecretaryModal from "./Modals/SecretaryModal";
 
-const Students = () => {
-  const [students, setStudents] = useState([]);
-  const [specializations, setSpecializations] = useState([]);
+const Secretaries = () => {
+  const [secretaries, setSecretaries] = useState([]);
   const [data, setData] = useState([]);
-  const [isStudentModalOpen, setIsStudentModalOpen] = useState(false);
+  const [isSecretaryModalOpen, setIsSecretaryModalOpen] = useState(false);
   const [modalState, setModalState] = useState();
   const [itemToEdit, setItemToEdit] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [search, setSearch] = useState();
 
   const handleClose = () => {
-    setIsStudentModalOpen(false);
+    setIsSecretaryModalOpen(false);
     setTimeout(() => {
       setModalState();
       setItemToEdit();
@@ -25,45 +24,27 @@ const Students = () => {
   };
 
   useEffect(() => {
-    getStudentsData();
-    getSpecializationsData();
+    getSecretariesData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getStudentsData = async () => {
+  const getSecretariesData = async () => {
     setIsLoading(true);
-    const response = await axios.get(APIVariables.STUDENTS);
+    const response = await axios.get(APIVariables.SECRETARIES);
 
     if (response.status === 200) {
-      setStudents(response.data);
+      setSecretaries(response.data);
       setTableData();
       setIsLoading(false);
     }
   };
 
   const loadLazyData = () => {
-    getStudentsData();
-  };
-
-  const getSpecializationsData = async () => {
-    const response = await axios.get(APIVariables.SPECIALIZATIONS);
-
-    if (response.status === 200) {
-      setSpecializations(response.data);
-    }
+    getSecretariesData();
   };
 
   const setTableData = () => {
-    setData([
-      "id",
-      "code",
-      "firstName",
-      "lastName",
-      "specialization",
-      "year",
-      "class",
-      "email",
-    ]);
+    setData(["id", "firstName", "lastName", "address"]);
   };
 
   const handleSearch = (e) => {
@@ -71,19 +52,19 @@ const Students = () => {
   };
 
   return (
-    <StyledStudents>
+    <StyledSecretaries>
       <div className="page--title--add mb1 mt1">
-        <div className="page--title-text">Students</div>
+        <div className="page--title-text">Secretaries</div>
         <div>
           <button
             className="btn-add"
             onClick={() => {
-              setIsStudentModalOpen(true);
+              setIsSecretaryModalOpen(true);
               setModalState("add");
             }}
-            title="Add student"
+            title="Add secretary"
           >
-            Add Student
+            Add Secretary
           </button>
         </div>
       </div>
@@ -93,7 +74,7 @@ const Students = () => {
           name="search"
           size="small"
           id="outlined-basic"
-          label="Search student"
+          label="Search secretary"
           variant="outlined"
           value={search ?? ""}
           onChange={(event) => handleSearch(event)}
@@ -104,29 +85,27 @@ const Students = () => {
       ) : (
         <Table
           colData={data}
-          data={students}
-          specializations={specializations}
+          data={secretaries}
           setModalState={setModalState}
-          openModal={setIsStudentModalOpen}
+          openModal={setIsSecretaryModalOpen}
           setItemToEdit={setItemToEdit}
           isLoading={isLoading}
         />
       )}
       <Pagination count={10} variant="outlined" />
-      <StudentModal
-        open={isStudentModalOpen}
+      <SecretaryModal
+        open={isSecretaryModalOpen}
         handleClose={handleClose}
         modalState={modalState}
-        student={
+        secretary={
           !isNaN(itemToEdit)
-            ? students.find((student) => student.id === itemToEdit)
+            ? secretaries.find((secretary) => secretary.id === itemToEdit)
             : undefined
         }
-        specializations={specializations}
         loadLazyData={loadLazyData}
       />
-    </StyledStudents>
+    </StyledSecretaries>
   );
 };
 
-export default Students;
+export default Secretaries;

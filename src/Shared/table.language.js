@@ -8,4 +8,5 @@ export const TABLE_LANGUAGE = {
   code: "Code",
   actions: "Actions",
   email: "Email",
+  address: "Address",
 };
