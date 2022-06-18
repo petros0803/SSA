@@ -79,7 +79,13 @@ const Certificates = () => {
         <div className="btn--container">
           <button
             className={
-              certificateSelected ? "next-btn" : "next-btn next-btn-disabled"
+              pageState === 0
+                ? certificateSelected
+                  ? "next-btn"
+                  : "next-btn next-btn-disabled"
+                : pageState === 1 && description
+                ? "next-btn"
+                : "next-btn next-btn-disabled"
             }
             onClick={() => {
               if (pageState <= 1) {
@@ -100,7 +106,15 @@ const Certificates = () => {
               <>
                 Next
                 <img
-                  src={certificateSelected ? RightArrow : RightArrowDisabled}
+                  src={
+                    pageState === 0
+                      ? certificateSelected
+                        ? RightArrow
+                        : RightArrowDisabled
+                      : pageState === 1 && description
+                      ? RightArrow
+                      : RightArrowDisabled
+                  }
                   alt="Next"
                 />
               </>
