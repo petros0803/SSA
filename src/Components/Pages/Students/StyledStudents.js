@@ -5,6 +5,29 @@ export default styled.div`
   width: 95%;
   margin: 0 auto;
 
+  .search--filters--div{
+    display: flex;
+    justify-content: space-between;
+
+    .button--div{
+      display: flex;
+      align-items: center;
+      column-gap: 5px;
+
+      .MuiSelect-select{
+        width: 100px;
+      }
+
+      .MuiInputLabel-outlined{
+        margin-top: -7px;
+      }
+
+      .MuiInputLabel-shrink{
+        margin-top: 0px !important;
+      }
+    }
+  }
+
   .page--title--add {
     display: flex;
     justify-content: space-between;

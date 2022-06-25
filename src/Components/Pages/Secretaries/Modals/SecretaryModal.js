@@ -14,26 +14,10 @@ import Error from "../../../../Assets/Icons/error.png";
 import { APIVariables } from "../../../../Shared/api";
 import axios from "axios";
 import { nameRegex } from "../../../../helpers";
-
-const ValidationSchema = Yup.object().shape({
-  firstName: Yup.string()
-    .min(3, "First name must be at least 3 characters long")
-    .max(30, "Exceded the maximum number of characters")
-    .matches(nameRegex, "First name must contain only letters and dashes")
-    .required("This field is mandatory"),
-  lastName: Yup.string()
-    .min(3, "Last name must be at least 3 characters long")
-    .max(30, "Exceded the maximum number of characters")
-    .matches(
-      nameRegex,
-      "Last name must contain only letters, dashes and apostrophes"
-    )
-    .required("This field is mandatory"),
-  address: Yup.string()
-    .min(3, "First name must be at least 3 characters long")
-    .max(50, "Exceded the maximum number of characters")
-    .required("This field is mandatory"),
-});
+import {
+  notifyError,
+  notifySuccess,
+} from "../../../Common/ToastNotification/ToastNotification";
 
 const SecretaryModal = ({
   open,
@@ -41,6 +25,7 @@ const SecretaryModal = ({
   modalState,
   secretary,
   loadLazyData,
+  translate
 }) => {
   const style = {
     position: "absolute",
@@ -52,6 +37,26 @@ const SecretaryModal = ({
     boxShadow: 24,
     p: 4,
   };
+
+  const ValidationSchema = Yup.object().shape({
+    firstName: Yup.string()
+      .min(3, translate("firstName_validation_min"))
+      .max(30, translate("validation_max"))
+      .matches(nameRegex, translate("firstName_validation_matches"))
+      .required(translate("validation_required")),
+    lastName: Yup.string()
+      .min(3, translate("lastName_validation_min"))
+      .max(30, translate("validation_max"))
+      .matches(
+        nameRegex,
+        translate("lastName_validation_matches")
+      )
+      .required(translate("validation_required")),
+    address: Yup.string()
+      .min(3, translate("address_validation_min"))
+      .max(50, translate("validation_max"))
+      .required(translate("validation_required")),
+  });
 
   const [initialValues, setInitialValues] = useState();
 
@@ -73,12 +78,16 @@ const SecretaryModal = ({
       .then((response) => {
         console.log(response);
         if (response.status === 201) {
+          notifySuccess(translate("secretary_successfully_added"));
           loadLazyData();
           handleClose();
+        } else {
+          notifyError(translate("secretary_unsuccessfully_added"));
         }
       })
       .catch((error) => {
         console.log("error", error);
+        notifyError(translate("secretary_unsuccessfully_added"));
       });
   };
   const updateSecretary = async (values) => {
@@ -91,12 +100,16 @@ const SecretaryModal = ({
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
+          notifySuccess(translate("secretary_successfully_updated"));
           loadLazyData();
           handleClose();
+        } else {
+          notifyError(translate("secretary_unsuccessfully_updated"));
         }
       })
       .catch((error) => {
         console.log("error", error);
+        notifyError(translate("secretary_unsuccessfully_updated"));
       });
   };
 
@@ -116,13 +129,16 @@ const SecretaryModal = ({
       .then((response) => {
         if (response.status === 200) {
           console.log(response);
-
+          notifySuccess(translate("secretary_successfully_deleted"));
           loadLazyData();
           handleClose();
+        } else {
+          notifyError(translate("secretary_unsuccessfully_deleted"));
         }
       })
       .catch((error) => {
         console.log("error", error);
+        notifyError(translate("secretary_unsuccessfully_deleted"));
       });
   };
 
@@ -144,7 +160,7 @@ const SecretaryModal = ({
             <img
               src={CLOSE}
               alt="Close"
-              title="Close"
+              title={translate("close")}
               onClick={() => handleClose()}
             />
           </div>
@@ -172,8 +188,8 @@ const SecretaryModal = ({
                   component="h2"
                   className="center mb1 rhino"
                 >
-                  Are you sure you want to delete secretary{" "}
-                  <span className="delete--secretary--name">{`${initialValues.firstName} ${initialValues.lastName}`}</span>
+                  {translate("delete_secretary_description")}{" "}
+                  <span className="delete--secretary--name">{`${initialValues.firstName} ${initialValues.lastName}`}</span>?
                 </Typography>
                 <Button
                   variant="outlined"
@@ -181,7 +197,7 @@ const SecretaryModal = ({
                   color="error"
                   onClick={() => deleteSecretary()}
                 >
-                  Delete
+                  {translate("delete")}
                 </Button>
               </>
             ) : (
@@ -201,7 +217,7 @@ const SecretaryModal = ({
                             disabled={modalState === "view" ? true : false}
                             name="firstName"
                             id="outlined-basic"
-                            label="First name"
+                            label={translate("firstName")}
                             variant="outlined"
                             value={values.firstName}
                             onChange={(e) =>
@@ -223,7 +239,7 @@ const SecretaryModal = ({
                             disabled={modalState === "view" ? true : false}
                             name="lastName"
                             id="outlined-basic"
-                            label="Last name"
+                            label={translate("lastName")}
                             variant="outlined"
                             value={values.lastName}
                             onChange={(e) =>
@@ -242,7 +258,7 @@ const SecretaryModal = ({
                             disabled={modalState === "view" ? true : false}
                             name="address"
                             id="outlined-basic"
-                            label="Address"
+                            label={translate("address")}
                             variant="outlined"
                             value={values.address}
                             onChange={(e) =>
@@ -262,10 +278,10 @@ const SecretaryModal = ({
                           type="submit"
                         >
                           {modalState === "view"
-                            ? "Close"
+                            ? translate("close")
                             : modalState === "edit"
-                            ? "Edit"
-                            : "Add"}
+                            ? translate("edit")
+                            : translate("add")}
                         </Button>
                       </Form>
                     );

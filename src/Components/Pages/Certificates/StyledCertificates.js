@@ -5,6 +5,20 @@ export default styled.div`
   width: 95%;
   margin: 0 auto;
 
+  .certificate--cards--container{
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  .certificate--image{
+    width: 252px;
+  }
+
+  .certificate--image--selected{
+    width: 250px;
+    border: 1px solid ${Colors.rhino}
+  }
+
   .page--title--add {
     display: flex;
     justify-content: space-between;
@@ -45,7 +59,7 @@ export default styled.div`
       align-items: center;
       font-size: 16px;
       float: right;
-      width: 120px;
+      width: 130px;
       height: 35px;
       justify-content: space-around;
       cursor: pointer;

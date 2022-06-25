@@ -5,4 +5,6 @@ export const APIVariables = {
   SPECIALIZATIONS: `${API_URL}/specializations`,
   SECRETARIES: `${API_URL}/secretaries`,
   CERTIFICATES: `${API_URL}/certificates`,
+  LOGIN: `https://localhost:5001/account/token`,
+  GET_CURENT_USER: `https://localhost:44335/get-current-user`,
 };

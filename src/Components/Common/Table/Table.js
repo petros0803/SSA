@@ -1,6 +1,7 @@
 import React from "react";
 import StyledTable from "./StyledTable";
-import { TABLE_LANGUAGE } from "../../../Shared/table.language";
+import { withTranslate } from 'react-redux-multilingual'
+import { connect } from "react-redux";
 
 //Table Icons View, Edit, Delete
 import EYE from "../../../Assets/Icons/eye.png";
@@ -14,12 +15,27 @@ const Table = ({
   openModal,
   setItemToEdit,
   specializations,
+  ...props
 }) => {
   const handleModalStateChange = (state, id) => {
     setModalState(state);
     setItemToEdit(id);
     openModal(true);
   };
+
+  const TABLE_LANGUAGE = {
+    id: props.translate("id"),
+    firstName: props.translate("firstName"),
+    lastName: props.translate("lastName"),
+    year: props.translate("year"),
+    specialization: props.translate("specialization"),
+    class: props.translate("class"),
+    code: props.translate("code"),
+    actions: props.translate("actions"),
+    email: props.translate("email"),
+    address: props.translate("address"),
+  };
+
   return (
     <StyledTable>
       <table>
@@ -39,29 +55,29 @@ const Table = ({
                   {col !== "specialization"
                     ? value[col]
                     : specializations.map(
-                        (specialization) =>
-                          specialization.id === value[col] &&
-                          specialization.abbreviation
-                      )}
+                      (specialization) =>
+                        specialization.id === value[col] &&
+                        specialization.abbreviation
+                    )}
                 </td>
               ))}
               <td>
                 <img
                   src={EYE}
                   alt="view"
-                  title="View"
+                  title={props.translate("view")}
                   onClick={() => handleModalStateChange("view", value.id)}
                 />
                 <img
                   src={EDIT}
                   alt="edit"
-                  title="Edit"
+                  title={props.translate("edit")}
                   onClick={() => handleModalStateChange("edit", value.id)}
                 />
                 <img
                   src={DELETE}
                   alt="delete"
-                  title="Delete"
+                  title={props.translate("delete")}
                   onClick={() => handleModalStateChange("delete", value.id)}
                 />
               </td>
@@ -73,4 +89,17 @@ const Table = ({
   );
 };
 
-export default Table;
+const mapStateToProps = (state) => {
+  return {
+    ...state.reducer,
+    ...state.translate
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // logout: () => dispatch(logout()),
+  };
+};
+
+export default withTranslate(connect(mapStateToProps, mapDispatchToProps)(Table));

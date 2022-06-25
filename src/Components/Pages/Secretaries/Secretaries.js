@@ -5,8 +5,10 @@ import { APIVariables } from "../../../Shared/api";
 import Table from "../../Common/Table/Table";
 import { Pagination, Skeleton, TextField } from "@mui/material";
 import SecretaryModal from "./Modals/SecretaryModal";
+import { withTranslate } from 'react-redux-multilingual'
+import { connect } from "react-redux";
 
-const Secretaries = () => {
+const Secretaries = ({...props}) => {
   const [secretaries, setSecretaries] = useState([]);
   const [data, setData] = useState([]);
   const [isSecretaryModalOpen, setIsSecretaryModalOpen] = useState(false);
@@ -54,7 +56,7 @@ const Secretaries = () => {
   return (
     <StyledSecretaries>
       <div className="page--title--add mb1 mt1">
-        <div className="page--title-text">Secretaries</div>
+        <div className="page--title-text">{props.translate("secretaries")}</div>
         <div>
           <button
             className="btn-add"
@@ -62,9 +64,9 @@ const Secretaries = () => {
               setIsSecretaryModalOpen(true);
               setModalState("add");
             }}
-            title="Add secretary"
+            title={props.translate("add_secretary")}
           >
-            Add Secretary
+            {props.translate("add_secretary")}
           </button>
         </div>
       </div>
@@ -74,7 +76,7 @@ const Secretaries = () => {
           name="search"
           size="small"
           id="outlined-basic"
-          label="Search secretary"
+          label={props.translate("search_secretary")}
           variant="outlined"
           value={search ?? ""}
           onChange={(event) => handleSearch(event)}
@@ -103,9 +105,22 @@ const Secretaries = () => {
             : undefined
         }
         loadLazyData={loadLazyData}
-      />
+        translate={props.translate}
+        />
     </StyledSecretaries>
   );
 };
 
-export default Secretaries;
+const mapStateToProps = (state) => {
+  return {
+    ...state.reducer,
+    ...state.translate
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+  };
+};
+
+export default withTranslate(connect(mapStateToProps, mapDispatchToProps)(Secretaries));

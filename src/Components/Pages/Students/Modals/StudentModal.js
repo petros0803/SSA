@@ -21,29 +21,10 @@ import Error from "../../../../Assets/Icons/error.png";
 import { APIVariables } from "../../../../Shared/api";
 import axios from "axios";
 import { nameRegex } from "../../../../helpers";
-
-const ValidationSchema = Yup.object().shape({
-  firstName: Yup.string()
-    .min(3, "First name must be at least 3 characters long")
-    .max(30, "Exceded the maximum number of characters")
-    .matches(nameRegex, "First name bust contain only letters and dashes")
-    .required("This field is mandatory"),
-  lastName: Yup.string()
-    .min(3, "Last name must be at least 3 characters long")
-    .max(30, "Exceded the maximum number of characters")
-    .matches(
-      nameRegex,
-      "Last name bust contain only letters, dashes and apostrophes"
-    )
-    .required("This field is mandatory"),
-  year: Yup.string().required("This field is mandatory"),
-  specialization: Yup.string().required("This field is mandatory"),
-  class: Yup.string().required("This field is mandatory"),
-  email: Yup.string()
-    .email("Email is invalid")
-    .required("This field is mandatory"),
-  code: Yup.string().required("This field is mandatory"),
-});
+import {
+  notifyError,
+  notifySuccess,
+} from "../../../Common/ToastNotification/ToastNotification";
 
 const StudentModal = ({
   open,
@@ -52,6 +33,7 @@ const StudentModal = ({
   student,
   specializations,
   loadLazyData,
+  translate
 }) => {
   const style = {
     position: "absolute",
@@ -63,6 +45,29 @@ const StudentModal = ({
     boxShadow: 24,
     p: 4,
   };
+
+  const ValidationSchema = Yup.object().shape({
+    firstName: Yup.string()
+      .min(3, translate("firstName_validation_min"))
+      .max(30, translate("validation_max"))
+      .matches(nameRegex, translate("firstName_validation_matches"))
+      .required(translate("validation_required")),
+    lastName: Yup.string()
+      .min(3, translate("lastName_validation_min"))
+      .max(30, translate("validation_max"))
+      .matches(
+        nameRegex,
+        translate("lastName_validation_matches")
+      )
+      .required(translate("validation_required")),
+    year: Yup.string().required(translate("validation_required")),
+    specialization: Yup.string().required(translate("validation_required")),
+    class: Yup.string().required(translate("validation_required")),
+    email: Yup.string()
+      .email(translate("email_validation_invalid"))
+      .required(translate("validation_required")),
+    code: Yup.string().required(translate("validation_required")),
+  });
 
   const [initialValues, setInitialValues] = useState();
 
@@ -92,12 +97,16 @@ const StudentModal = ({
       .then((response) => {
         console.log(response);
         if (response.status === 201) {
+          notifySuccess(translate('student_successfully_added'));
           loadLazyData();
           handleClose();
+        } else {
+          notifyError(translate('student_unsuccessfully_added'));
         }
       })
       .catch((error) => {
         console.log("error", error);
+        notifyError(translate('student_unsuccessfully_added'));
       });
   };
   const updateStudent = async (values) => {
@@ -114,12 +123,16 @@ const StudentModal = ({
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
+          notifySuccess(translate('student_successfully_updated'));
           loadLazyData();
           handleClose();
+        } else {
+          notifyError(translate("student_unsuccessfully_updated"));
         }
       })
       .catch((error) => {
         console.log("error", error);
+        notifyError(translate("student_unsuccessfully_updated"));
       });
   };
 
@@ -139,13 +152,16 @@ const StudentModal = ({
       .then((response) => {
         if (response.status === 200) {
           console.log(response);
-
+          notifySuccess(translate('student_successfully_deleted'));
           loadLazyData();
           handleClose();
+        } else {
+          notifyError(translate('student_unsuccessfully_deleted'));
         }
       })
       .catch((error) => {
         console.log("error", error);
+        notifyError(translate('student_unsuccessfully_deleted'));
       });
   };
 
@@ -167,7 +183,7 @@ const StudentModal = ({
             <img
               src={CLOSE}
               alt="Close"
-              title="Close"
+              title={translate("close")}
               onClick={() => handleClose()}
             />
           </div>
@@ -179,12 +195,12 @@ const StudentModal = ({
             className="center mb1 rhino"
           >
             {modalState === "view"
-              ? `View Student`
+              ? translate("view_student")
               : modalState === "edit"
-              ? "Edit student"
-              : modalState === "delete"
-              ? "Delete student"
-              : modalState === "add" && "Add student"}
+                ? translate("edit_student")
+                : modalState === "delete"
+                  ? translate("delete_student")
+                  : modalState === "add" && translate("add_student")}
           </Typography>
           <StyledModal>
             {modalState === "delete" ? (
@@ -195,8 +211,8 @@ const StudentModal = ({
                   component="h2"
                   className="center mb1 rhino"
                 >
-                  Are you sure you want to delete student{" "}
-                  <span className="delete--student--name">{`${initialValues.firstName} ${initialValues.lastName}`}</span>
+                  {translate("delete_student_description")}{" "}
+                  <span className="delete--student--name">{`${initialValues.firstName} ${initialValues.lastName}`}</span>?
                 </Typography>
                 <Button
                   variant="outlined"
@@ -204,7 +220,7 @@ const StudentModal = ({
                   color="error"
                   onClick={() => deleteStudent()}
                 >
-                  Delete
+                  {translate("delete")}
                 </Button>
               </>
             ) : (
@@ -224,7 +240,7 @@ const StudentModal = ({
                             disabled={modalState === "view" ? true : false}
                             name="firstName"
                             id="outlined-basic"
-                            label="First name"
+                            label={translate("firstName")}
                             variant="outlined"
                             value={values.firstName}
                             onChange={(e) =>
@@ -246,7 +262,7 @@ const StudentModal = ({
                             disabled={modalState === "view" ? true : false}
                             name="lastName"
                             id="outlined-basic"
-                            label="Last name"
+                            label={translate("lastName")}
                             variant="outlined"
                             value={values.lastName}
                             onChange={(e) =>
@@ -270,7 +286,8 @@ const StudentModal = ({
                                   : "demo-simple-select-label"
                               }
                             >
-                              Year
+                              {translate("year")}
+
                             </InputLabel>
                             <Select
                               error={!!errors.year && !!touched.year}
@@ -282,15 +299,15 @@ const StudentModal = ({
                                   : "demo-simple-select"
                               }
                               value={values.year}
-                              label="Year"
+                              label={translate("year")}
                               onChange={(e) =>
                                 setFieldValue("year", e.target.value)
                               }
                             >
-                              <MenuItem value={1}>First</MenuItem>
-                              <MenuItem value={2}>Second</MenuItem>
-                              <MenuItem value={3}>Third</MenuItem>
-                              <MenuItem value={4}>Fourth</MenuItem>
+                              <MenuItem value={1}>{translate("first")}</MenuItem>
+                              <MenuItem value={2}>{translate("second")}</MenuItem>
+                              <MenuItem value={3}>{translate("third")}</MenuItem>
+                              <MenuItem value={4}>{translate("fourth")}</MenuItem>
                             </Select>
                             {!!errors.year && !!touched.year && (
                               <Tooltip title={errors.year} placement="bottom">
@@ -315,7 +332,7 @@ const StudentModal = ({
                                   : "demo-simple-select-label"
                               }
                             >
-                              Specialization
+                              {translate("specialization")}
                             </InputLabel>
                             <Select
                               error={
@@ -330,7 +347,7 @@ const StudentModal = ({
                                   : "demo-simple-select"
                               }
                               value={values.specialization}
-                              label="Specialization"
+                              label={translate("specialization")}
                               onChange={(e) =>
                                 setFieldValue("specialization", e.target.value)
                               }
@@ -365,7 +382,7 @@ const StudentModal = ({
                             disabled={modalState === "view" ? true : false}
                             name="class"
                             id="outlined-basic"
-                            label="Class"
+                            label={translate("class")}
                             variant="outlined"
                             value={values.class}
                             onChange={(e) =>
@@ -384,7 +401,7 @@ const StudentModal = ({
                             disabled={modalState === "view" ? true : false}
                             name="email"
                             id="outlined-basic"
-                            label="Email"
+                            label={translate("email")}
                             variant="outlined"
                             value={values.email}
                             onChange={(e) =>
@@ -403,7 +420,7 @@ const StudentModal = ({
                             disabled={modalState === "view" ? true : false}
                             name="code"
                             id="outlined-basic"
-                            label="Code"
+                            label={translate("code")}
                             variant="outlined"
                             value={values.code}
                             onChange={(e) =>
@@ -422,10 +439,10 @@ const StudentModal = ({
                           type="submit"
                         >
                           {modalState === "view"
-                            ? "Close"
+                            ? translate("close")
                             : modalState === "edit"
-                            ? "Edit"
-                            : "Add"}
+                              ? translate("edit")
+                              : translate("add")}
                         </Button>
                       </Form>
                     );
