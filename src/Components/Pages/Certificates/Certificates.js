@@ -7,18 +7,25 @@ import LeftArrow from "../../../Assets/Icons/left-arrow.png";
 import RightArrow from "../../../Assets/Icons/right-arrow.png";
 import RightArrowDisabled from "../../../Assets/Icons/right-arrow-disabled.png";
 import Download from "../../../Assets/Icons/download.png";
-import DownloadDisabled from "../../../Assets/Icons/download-disabled.png";
+import AdeverintaStudent from "../../../Assets/Images/AdeverintaStudent.png";
+import CerereRestituireTaxa from "../../../Assets/Images/CerereRestituireTaxa.png";
 import StudentCertificate from "./AllCertificates/StudentCertificate/StudentCertificate";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
+import { notifySuccess } from "../../Common/ToastNotification/ToastNotification";
+import { withTranslate } from 'react-redux-multilingual'
+import { connect } from "react-redux";
+import TaxRefundRequest from "./AllCertificates/TaxRefundRequest/TaxRefundRequest";
 
-const Certificates = () => {
+const Certificates = ({ ...props }) => {
   const [certificates, setCertificates] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [certificateSelected, setCertificateSelected] = useState();
   const [pageState, setPageState] = useState(0);
   const [reference, setReference] = useState();
   const [description, setDescription] = useState();
+  const [description1, setDescription1] = useState();
+  const [description2, setDescription2] = useState();
 
   useEffect(() => {
     getCertificatesData();
@@ -50,6 +57,9 @@ const Certificates = () => {
     setPageState(0);
     setCertificateSelected();
     setDescription();
+    setDescription1();
+    setDescription2();
+    notifySuccess("Certificate successfully downloaded!");
   };
 
   console.log("certificateSelected :>> ", certificateSelected);
@@ -65,27 +75,23 @@ const Certificates = () => {
                   setPageState(pageState - 1);
                   if (pageState === 1) {
                     setDescription();
+                    setDescription1();
+                    setDescription2();
                   }
                 }}
               >
-                <img src={LeftArrow} alt="Previous" /> Previous
+                <img src={LeftArrow} alt="Previous" /> {props.translate("previous")}
               </button>
             )}
           </div>
         </div>
         <div className="page--title-text">
-          {pageState === 0 ? "Certificates" : certificateSelected.title}
+          {pageState === 0 ? props.translate("certificates") : certificateSelected.title === "Student Certificate" && props.translate("student_certificate_title")}
         </div>
         <div className="btn--container">
           <button
             className={
-              pageState === 0
-                ? certificateSelected
-                  ? "next-btn"
-                  : "next-btn next-btn-disabled"
-                : pageState === 1 && description
-                ? "next-btn"
-                : "next-btn next-btn-disabled"
+              certificateSelected ? pageState === 0 ? "next-btn" : (pageState >= 1 && (certificateSelected.title === "Student Certificate" ? description : (description && description1 && description2))) ? "next-btn" : "next-btn next-btn-disabled" : "next-btn next-btn-disabled"
             }
             onClick={() => {
               if (pageState <= 1) {
@@ -93,7 +99,7 @@ const Certificates = () => {
                   if (pageState === 0) {
                     setPageState(pageState + 1);
                   }
-                  if (pageState === 1 && description) {
+                  if (pageState === 1 && (certificateSelected.title === "Student Certificate" ? description : (description && description1 && description2))) {
                     setPageState(pageState + 1);
                   }
                 }
@@ -104,57 +110,90 @@ const Certificates = () => {
           >
             {pageState <= 1 ? (
               <>
-                Next
+                {props.translate("next")}
                 <img
-                  src={
-                    pageState === 0
-                      ? certificateSelected
-                        ? RightArrow
-                        : RightArrowDisabled
-                      : pageState === 1 && description
-                      ? RightArrow
-                      : RightArrowDisabled
-                  }
+                  src={certificateSelected ? pageState === 0 ? RightArrow : (pageState >= 1 && (certificateSelected.title === "Student Certificate" ? description : (description && description1 && description2))) ? RightArrow : RightArrowDisabled : RightArrowDisabled}
                   alt="Next"
                 />
               </>
             ) : (
               <>
-                Download
-                <img src={Download} alt="Next" />
+                {props.translate("download")}
+                <img src={Download} alt="Download" />
               </>
             )}
           </button>
         </div>
       </div>
-      {pageState === 0 ? (
-        isLoading ? (
-          <Skeleton variant="rectangular" animation="wave" />
-        ) : (
-          <div className="certificate--cards--container">
-            {certificates?.map((certificate) => (
-              <div
-                className="certificate--card cursorPointer"
-                key={certificate.id}
-                onClick={() => setCertificateSelected(certificate)}
-              >
-                {certificate.title}
-              </div>
-            ))}
-          </div>
-        )
-      ) : certificateSelected.title === "Student Certificate" ? (
-        <StudentCertificate
-          setReference={setReference}
-          pageState={pageState}
-          description={description}
-          setDescription={setDescription}
-        />
-      ) : (
-        ""
-      )}
-    </StyledCertificate>
+      {
+        pageState === 0 ? (
+          isLoading ? (
+            <Skeleton variant="rectangular" animation="wave" />
+          ) : (
+            <div className="certificate--cards--container">
+              {certificates?.map((certificate) => (
+                <div
+                  className="certificate--card cursorPointer"
+                  key={certificate.id}
+                  onClick={() => {
+                    if (certificateSelected) {
+                      if (certificateSelected.id !== certificate?.id) {
+                        setCertificateSelected(certificate)
+                      } else {
+                        setCertificateSelected()
+                      }
+                    } else { setCertificateSelected(certificate) }
+                  }}
+                >
+                  {certificate.title === "Student Certificate" ?
+                    <img src={AdeverintaStudent}
+                      alt={props.translate("certificate")}
+                      className={certificateSelected?.id === certificate?.id ? "certificate--image--selected" : "certificate--image"}
+                    />
+                    : certificate.title === "Tax refund request" ? <img src={CerereRestituireTaxa}
+                      alt={props.translate("certificate")}
+                      className={certificateSelected?.id === certificate?.id ? "certificate--image--selected" : "certificate--image"}
+                    />
+                      : certificate.title}
+                </div>
+              ))}
+            </div>
+          )
+        ) : certificateSelected.title === "Student Certificate" ? (
+          <StudentCertificate
+            setReference={setReference}
+            pageState={pageState}
+            description={description}
+            setDescription={setDescription}
+            translate={props.translate}
+          />
+        ) : certificateSelected.title === 'Tax refund request' ?
+          <TaxRefundRequest
+            setReference={setReference}
+            pageState={pageState}
+            description={description}
+            setDescription={setDescription}
+            description1={description1}
+            setDescription1={setDescription1}
+            description2={description2}
+            setDescription2={setDescription2}
+            translate={props.translate} />
+          : ""
+      }
+    </StyledCertificate >
   );
 };
 
-export default Certificates;
+const mapStateToProps = (state) => {
+  return {
+    ...state.reducer,
+    ...state.translate
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+  };
+};
+
+export default withTranslate(connect(mapStateToProps, mapDispatchToProps)(Certificates));

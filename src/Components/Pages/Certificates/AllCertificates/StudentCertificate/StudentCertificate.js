@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { TextField } from "@mui/material";
 import StyledStudentCertificate from "./StyledStudentCertificate";
 
@@ -7,6 +7,7 @@ const StudentCertificate = ({ ...props }) => {
 
   useEffect(() => {
     props.setReference(printRef);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [printRef]);
 
   return (
@@ -38,7 +39,7 @@ const StudentCertificate = ({ ...props }) => {
         {props.pageState === 1 ? (
           <TextField
             name="description"
-            label="Description"
+            label={props.translate("student_certificate_input")}
             variant="outlined"
             value={props.description ?? ""}
             onChange={(e) => props.setDescription(e.target.value)}

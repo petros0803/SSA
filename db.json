@@ -81,8 +81,8 @@
       "id": 8
     },
     {
-      "firstName": "BBB",
-      "lastName": "BBB",
+      "firstName": "BBBB",
+      "lastName": "BBBB",
       "year": 3,
       "specialization": 0,
       "class": "3143A",
@@ -91,8 +91,8 @@
       "id": 9
     },
     {
-      "firstName": "CCC",
-      "lastName": "CCC",
+      "firstName": "Bogdan",
+      "lastName": "Petrosceac",
       "year": 2,
       "specialization": 0,
       "class": "3143A",
@@ -120,10 +120,10 @@
   ],
   "secretaries": [
     {
-      "id": 0,
       "firstName": "Bogdan Ciprian",
       "lastName": "Petrosceac",
-      "address": "A.S. Puskin 96"
+      "address": "A.S. Puskin 9667",
+      "id": 0
     },
     {
       "id": 1,
@@ -153,8 +153,11 @@
   "certificates": [
     {
       "id": 0,
-      "title": "Student Certificate",
-      "url": "/student-certificate"
+      "title": "Student Certificate"
+    },
+    {
+      "id": 1,
+      "title": "Tax refund request"
     }
   ]
 }

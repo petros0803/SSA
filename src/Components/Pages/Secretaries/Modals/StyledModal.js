@@ -8,7 +8,7 @@ export default styled.div`
   row-gap: 15px;
   margin: 0 auto;
 
-  .delete--student--name {
+  .delete--secretary--name {
     color: ${Colors.sapphire};
   }
 
